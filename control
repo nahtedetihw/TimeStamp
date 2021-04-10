@@ -1,6 +1,6 @@
 Package: com.nahtedetihw.timestamp
 Name: Timestamp
-Version: 1.0
+Version: 1.1
 Architecture: iphoneos-arm
 Description: Dynamically cycle between time and date in StatusBar!
 Maintainer: Ethan Whited

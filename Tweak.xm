@@ -3,10 +3,12 @@
 - (void)updateTimer;
 @end
 
+static bool is24h;
+
 %hook _UIStatusBarStringView
 -(id)initWithFrame:(CGRect)arg1 {
     id o = %orig;
-    NSTimer *textTimer = [NSTimer scheduledTimerWithTimeInterval:11 target:self selector:@selector(updateTimer) userInfo:nil repeats:YES];
+    NSTimer *textTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateTimer) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:textTimer forMode:NSDefaultRunLoopMode];
     return o;
 }
@@ -14,7 +16,7 @@
 %new
 - (void)updateTimer {
     CATransition *transition = [CATransition animation];
-    transition.duration = 0.5f;
+    transition.duration = 0.7f;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     transition.type = kCATransitionFade;
     [self.layer addAnimation:transition forKey:nil];
@@ -25,7 +27,11 @@
         self.text = [dateFormatter stringFromDate:[NSDate date]];
     } else if ([self.text containsString:@"/"]) {
         NSDateFormatter *origDateFormatter = [[NSDateFormatter alloc] init];
-        [origDateFormatter setDateFormat:@"H:mm"];
+        if (is24h) {
+            [origDateFormatter setDateFormat:@"H:mm"];
+        } else {
+            [origDateFormatter setDateFormat:@"h:mm"];
+        }
         self.text = [origDateFormatter stringFromDate:[NSDate date]];
     }
 }
