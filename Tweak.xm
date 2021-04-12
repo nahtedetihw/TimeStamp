@@ -23,7 +23,11 @@ static bool is24h;
     
     if ([self.text containsString:@":"]) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"M/dd"];
+        if (is24h) {
+            [dateFormatter setDateFormat:@"dd/M"];
+        } else {
+            [dateFormatter setDateFormat:@"M/dd"];
+        }
         self.text = [dateFormatter stringFromDate:[NSDate date]];
     } else if ([self.text containsString:@"/"]) {
         NSDateFormatter *origDateFormatter = [[NSDateFormatter alloc] init];
